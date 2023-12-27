@@ -23,5 +23,4 @@ const io = new Server(expressServer, {
   cors: "*",
 });
 
-const WEB_INTERFACE = require("./controllers/interface")(io.of("/interface"));
-const DEVICE = require("./controllers/device")(io.of("/device"));
+const WEB_INTERFACE = require("./controllers/interface")(io);

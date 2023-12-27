@@ -1,19 +1,18 @@
 const MFS100 = require("./build/Release/mantra");
 const EventEmitter = require("events").EventEmitter;
 
-customEmitter = new EventEmitter();
+fingerScannerEmitter = new EventEmitter();
 
-customEmitter.on("start", () => {
+fingerScannerEmitter.on("start", () => {
   console.log("### START ...");
 });
-customEmitter.on("data", (evt) => {
-  console.log(evt);
-});
 
-customEmitter.on("end", () => {
+fingerScannerEmitter.on("end", () => {
   console.log("### END ###");
 });
 
 console.log(MFS100.getDeviceInfo());
 
-console.log(MFS100.callEmit(customEmitter.emit.bind(customEmitter)));
+console.log(
+  MFS100.identifySpecial(fingerScannerEmitter.emit.bind(fingerScannerEmitter))
+);

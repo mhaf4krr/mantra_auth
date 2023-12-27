@@ -322,11 +322,11 @@ namespace mantra
 
             ret = MFS100GetPreviewFrame(device, PreviewFrame);
             gettimeofday(&tv, NULL);
-            printf("Quality = %d and time = %d,%d\n", Quality, (int)tv.tv_sec, (int)tv.tv_usec);
+            // printf("Quality = %d and time = %d,%d\n", Quality, (int)tv.tv_sec, (int)tv.tv_usec);
 
             progressObject.Set(Napi::String::New(env, "quality"), Napi::Number::New(env, Quality));
 
-            emit.Call({Napi::String::New(env, "finger_identification"), progressObject});
+            emit.Call({Napi::String::New(env, "finger_scan_quality"), progressObject});
 
             if (Quality >= MIN_QUALITY_ALLOWED)
             {
@@ -354,7 +354,18 @@ namespace mantra
         }
 
         ret = MFS100GetFinalFrame(device, FinalFrame);
-        // Img_Write_to_file(FinalFrame,"Final_Frame.bmp",height,width);
+        // Img_Write_to_file(FinalFrame, "scanned_fingerprint.bmp", height, width);
+
+        unsigned char *Imagedata;
+        int ImageSize = (height * width) + 1078;
+        Imagedata = (unsigned char *)malloc(ImageSize);
+        ret = MFS100ConvertRawToBmp(device, FinalFrame, Imagedata, height, width);
+
+        MFS100ConvertRawToBmp(device, FinalFrame, Imagedata, height, width);
+
+        Napi::ArrayBuffer buff = Napi::ArrayBuffer::New(env, Imagedata, ImageSize);
+
+        emit.Call({Napi::String::New(env, "fingerprint_image"), buff});
 
         *ISOTemplateLength = FingerTemplateLength;
         ret = MFS100ExtractISOTemplate(device, FinalFrame, Iso_19794_2_Template, ISOTemplateLength);
@@ -362,12 +373,13 @@ namespace mantra
             PrintErrorMsg(ret);
 
         // Extract ANSI Template
-        int ANSITemplateLength = FingerTemplateLength;
-        ret = MFS100ExtractANSITemplate(device, FinalFrame, Ansi_378_2004_Template, &ANSITemplateLength);
-        if (ret != 0)
-            PrintErrorMsg(ret);
+        // int ANSITemplateLength = FingerTemplateLength;
+        // ret = MFS100ExtractANSITemplate(device, FinalFrame, Ansi_378_2004_Template, &ANSITemplateLength);
+        // if (ret != 0)
+        //     PrintErrorMsg(ret);
 
         free(PreviewFrame);
+        free(Imagedata);
         return 0;
     }
 
@@ -889,7 +901,7 @@ namespace mantra
     //         .Set(returnObj);
     // }
 
-    void IdentifySpecial(const Napi::CallbackInfo &info)
+    Napi::Object IdentifySpecial(const Napi::CallbackInfo &info)
     {
         Napi::Env env = info.Env();
         Napi::Function emit = info[0].As<Napi::Function>();
@@ -898,21 +910,13 @@ namespace mantra
 
         initializeDevice();
         IdentifyFromTemplates(currentMatch, env, emit);
-    }
 
-    Napi::Value CallEmit(const Napi::CallbackInfo &info)
-    {
-        Napi::Env env = info.Env();
-        Napi::Function emit = info[0].As<Napi::Function>();
-        emit.Call({Napi::String::New(env, "start")});
-        // Here some long running task and return piece of data exectuing some task
-        for (int i = 0; i < 3; i++)
-        {
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-            emit.Call({Napi::String::New(env, "data"), Napi::String::New(env, "data ...")});
-        }
-        emit.Call({Napi::String::New(env, "end")});
-        return Napi::String::New(env, "OK");
+        Napi::Object matchObject = Napi::Object::New(env);
+
+        matchObject.Set(Napi::String::New(env, "matched"), Napi::Number::New(env, currentMatch->matched));
+        matchObject.Set(Napi::String::New(env, "score"), Napi::Number::New(env, currentMatch->score));
+        matchObject.Set(Napi::String::New(env, "username"), Napi::String::New(env, currentMatch->username));
+        return matchObject;
     }
 
     Napi::Object Init(Napi::Env env, Napi::Object exports)

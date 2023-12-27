@@ -343,8 +343,8 @@ ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
 endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
-cmd_regen_makefile = cd $(srcdir); /usr/local/lib/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/root/.cache/node-gyp/20.10.0" "-Dnode_gyp_dir=/usr/local/lib/node_modules/node-gyp" "-Dnode_lib_file=/root/.cache/node-gyp/20.10.0/<(target_arch)/node.lib" "-Dmodule_root_dir=/app" "-Dnode_engine=v8" "--depth=." "-Goutput_dir=." "--generator-output=build" -I/app/build/config.gypi -I/usr/local/lib/node_modules/node-gyp/addon.gypi -I/root/.cache/node-gyp/20.10.0/include/node/common.gypi "--toplevel-dir=." binding.gyp
-Makefile: $(srcdir)/build/config.gypi $(srcdir)/../root/.cache/node-gyp/20.10.0/include/node/common.gypi $(srcdir)/node_modules/node-addon-api/node_api.gyp $(srcdir)/binding.gyp $(srcdir)/../usr/local/lib/node_modules/node-gyp/addon.gypi
+cmd_regen_makefile = cd $(srcdir); /usr/local/lib/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/home/hyder/.cache/node-gyp/18.16.0" "-Dnode_gyp_dir=/usr/local/lib/node_modules/node-gyp" "-Dnode_lib_file=/home/hyder/.cache/node-gyp/18.16.0/<(target_arch)/node.lib" "-Dmodule_root_dir=/home/hyder/Desktop/mantra_auth/server" "-Dnode_engine=v8" "--depth=." "-Goutput_dir=." "--generator-output=build" -I/home/hyder/Desktop/mantra_auth/server/build/config.gypi -I/usr/local/lib/node_modules/node-gyp/addon.gypi -I/home/hyder/.cache/node-gyp/18.16.0/include/node/common.gypi "--toplevel-dir=." binding.gyp
+Makefile: $(srcdir)/binding.gyp $(srcdir)/../../../.cache/node-gyp/18.16.0/include/node/common.gypi $(srcdir)/node_modules/node-addon-api/node_api.gyp $(srcdir)/../../../../../usr/local/lib/node_modules/node-gyp/addon.gypi $(srcdir)/build/config.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included

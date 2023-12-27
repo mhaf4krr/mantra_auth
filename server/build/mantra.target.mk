@@ -40,14 +40,14 @@ CFLAGS_CC_Debug := \
 	-std=gnu++17
 
 INCS_Debug := \
-	-I/root/.cache/node-gyp/20.10.0/include/node \
-	-I/root/.cache/node-gyp/20.10.0/src \
-	-I/root/.cache/node-gyp/20.10.0/deps/openssl/config \
-	-I/root/.cache/node-gyp/20.10.0/deps/openssl/openssl/include \
-	-I/root/.cache/node-gyp/20.10.0/deps/uv/include \
-	-I/root/.cache/node-gyp/20.10.0/deps/zlib \
-	-I/root/.cache/node-gyp/20.10.0/deps/v8/include \
-	-I/app/node_modules/node-addon-api
+	-I/home/hyder/.cache/node-gyp/18.16.0/include/node \
+	-I/home/hyder/.cache/node-gyp/18.16.0/src \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/openssl/config \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/openssl/openssl/include \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/uv/include \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/zlib \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/v8/include \
+	-I/home/hyder/Desktop/mantra_auth/server/node_modules/node-addon-api
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=mantra' \
@@ -84,14 +84,14 @@ CFLAGS_CC_Release := \
 	-std=gnu++17
 
 INCS_Release := \
-	-I/root/.cache/node-gyp/20.10.0/include/node \
-	-I/root/.cache/node-gyp/20.10.0/src \
-	-I/root/.cache/node-gyp/20.10.0/deps/openssl/config \
-	-I/root/.cache/node-gyp/20.10.0/deps/openssl/openssl/include \
-	-I/root/.cache/node-gyp/20.10.0/deps/uv/include \
-	-I/root/.cache/node-gyp/20.10.0/deps/zlib \
-	-I/root/.cache/node-gyp/20.10.0/deps/v8/include \
-	-I/app/node_modules/node-addon-api
+	-I/home/hyder/.cache/node-gyp/18.16.0/include/node \
+	-I/home/hyder/.cache/node-gyp/18.16.0/src \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/openssl/config \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/openssl/openssl/include \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/uv/include \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/zlib \
+	-I/home/hyder/.cache/node-gyp/18.16.0/deps/v8/include \
+	-I/home/hyder/Desktop/mantra_auth/server/node_modules/node-addon-api
 
 OBJS := \
 	$(obj).target/$(TARGET)/mantra.o
