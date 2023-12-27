@@ -1,0 +1,1 @@
+cmd_Release/obj.target/mantra.node := g++ -o Release/obj.target/mantra.node -shared -pthread -rdynamic -m64  -Wl,-soname=mantra.node -Wl,--start-group Release/obj.target/mantra/mantra.o Release/obj.target/node_modules/node-addon-api/nothing.a -Wl,--end-group -liengine_ansi_iso -lMFS100V9022
