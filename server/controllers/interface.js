@@ -16,12 +16,23 @@ module.exports = (io = Socket.Server) => {
         console.log(evt);
       });
 
+      fingerScannerEmitter.on("finger_scan_quality", (evt) => {
+        console.log("INTERFACE QUALITY:", evt);
+
+        let { quality } = evt;
+
+        console.log("MAIN BLOCKED");
+
+        socket.emit("finger_scan_quality_progress", quality);
+
+        console.log("MAIN BLOCKED");
+      });
+
       fingerScannerEmitter.on("fingerprint_image", (imageArrayBuffer) => {
         let imageData =
           "data:image/bmp;base64," +
           Buffer.from(imageArrayBuffer).toString("base64");
         socket.emit("fingerprint_image_client", imageData);
-        console.log({ imageData });
       });
 
       let fingerMatchResult = MFS100.identifySpecial(
