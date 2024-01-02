@@ -1,6 +1,11 @@
 const MFS100 = require("../build/Release/mantra");
 const EventEmitter = require("events").EventEmitter;
 let fingerScannerEmitter = new EventEmitter();
+let bindedFn = fingerScannerEmitter.emit.bind(fingerScannerEmitter);
+
+//set max event listener
+
+let lodash = require("lodash");
 
 const Socket = require("socket.io");
 
@@ -12,33 +17,47 @@ module.exports = (io = Socket.Server) => {
 
     socket.on("start_identification", () => {
       console.log("RECEIVED ON  DEVICE SOCKET");
-      fingerScannerEmitter.on("finger_identification", (evt) => {
+      fingerScannerEmitter.once("finger_identification", (evt) => {
         console.log(evt);
       });
 
-      fingerScannerEmitter.on("finger_scan_quality", (evt) => {
-        console.log("INTERFACE QUALITY:", evt);
+      let counter = 0;
+
+      let prev = null;
+
+      fingerScannerEmitter.once("finger_scan_quality", (evt) => {
+        //console.log("INTERFACE QUALITY:", evt);
 
         let { quality } = evt;
 
-        console.log("MAIN BLOCKED");
+        //debounced dfunction
+        //console.log("Involing Fn");
 
-        socket.emit("finger_scan_quality_progress", quality);
+        if (prev === null) {
+          prev = Date.now();
+        } else {
+          let current = Date.now();
 
-        console.log("MAIN BLOCKED");
+          if (current - prev > 1000) {
+            socket.emit("finger_scan_quality_progress", quality);
+
+            prev = current;
+          }
+        }
       });
 
-      fingerScannerEmitter.on("fingerprint_image", (imageArrayBuffer) => {
+      fingerScannerEmitter.once("fingerprint_image", (imageArrayBuffer) => {
         let imageData =
           "data:image/bmp;base64," +
           Buffer.from(imageArrayBuffer).toString("base64");
+        prev = null;
+
         socket.emit("fingerprint_image_client", imageData);
       });
 
-      let fingerMatchResult = MFS100.identifySpecial(
-        fingerScannerEmitter.emit.bind(fingerScannerEmitter)
-      );
-      console.log(fingerMatchResult);
+      let fingerMatchResult = MFS100.identifySpecial(bindedFn);
+
+      socket.emit("fingerprint_result_client", fingerMatchResult);
     });
   });
 };

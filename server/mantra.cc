@@ -626,6 +626,7 @@ namespace mantra
     void IdentifyFromTemplates(struct MatchResult *currentMatch, Napi::Env &env, Napi::Function &emit)
     {
 
+        std::cout << "CALLING IDENTIFY TEMPLATE FN WITHIN C++" << std::endl;
         emit.Call({Napi::String::New(env, "finger_identification"), Napi::String::New(env, "INITIALIZING DEVICE")});
 
         // 1. Capture Finger Impression through scanner

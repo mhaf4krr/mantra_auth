@@ -9,6 +9,17 @@ const { Server } = require("socket.io");
 const express = require("express");
 const app = express();
 
+app.get("/", (req, res) => {
+  let temp = 1;
+
+  for (let i = 1; i < 5; i++) {
+    temp = temp + temp * temp;
+    console.log(temp);
+  }
+
+  res.json(temp);
+});
+
 let PORT = 3010;
 
 if (process.env.ENV_CURRENT === "DEV") {
@@ -21,6 +32,7 @@ const expressServer = app.listen(PORT, () => {
 
 const io = new Server(expressServer, {
   cors: "*",
+  transports: ["websocket"],
 });
 
 const WEB_INTERFACE = require("./controllers/interface")(io);

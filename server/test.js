@@ -6,6 +6,9 @@ fingerScannerEmitter = new EventEmitter();
 fingerScannerEmitter.on("start", () => {
   console.log("### START ...");
 });
+fingerScannerEmitter.on("finger_identification", (evt) => {
+  console.log(evt);
+});
 
 fingerScannerEmitter.on("end", () => {
   console.log("### END ###");
@@ -14,5 +17,5 @@ fingerScannerEmitter.on("end", () => {
 console.log(MFS100.getDeviceInfo());
 
 console.log(
-  MFS100.identifySpecial(fingerScannerEmitter.emit.bind(fingerScannerEmitter))
+  MFS100.identifySpecial(fingerScannerEmitter.emit.bind(customEmitter))
 );

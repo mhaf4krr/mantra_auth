@@ -11,7 +11,6 @@ export default function Instructions() {
   let { stage } = stageContext;
 
   function compareApplyStyle(current: string, stage: string) {
-    console.log({ stage });
     if (current == stage) {
       return {
         background: "rgba(255, 163, 2, 0.30)",
@@ -55,7 +54,12 @@ export default function Instructions() {
             >
               DO NOT LIFT THE FINGER UNTILL PROMPTED
             </li>
-            <li className="mt-4">KEEP YOUR FACE STRAIGHT TOWARDS THE CAMERA</li>
+            <li
+              className="mt-4"
+              style={compareApplyStyle(stage, "SCAN_SUCCESS")}
+            >
+              KEEP YOUR FACE STRAIGHT TOWARDS THE CAMERA
+            </li>
             <li className="mt-4">WAIT TILL ATTENDANCE HAS BEEN MARKED</li>
             <li className="mt-4">
               TRY AGAIN,IF REGISTERED FINGER IS NOT RECOGNIZED
